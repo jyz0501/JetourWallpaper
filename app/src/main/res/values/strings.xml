@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">捷徒动画</string>
+    <string name="shortcut_start">启动叠加</string>
+    <string name="shortcut_start_long">启动视频壁纸叠加层</string>
+    <string name="shortcut_stop">关闭叠加</string>
+    <string name="shortcut_stop_long">关闭视频壁纸叠加层</string>
+    <string name="shortcut_disabled">当前不可用</string>
+</resources>

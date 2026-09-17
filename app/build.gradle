@@ -1,0 +1,33 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.overlay.livewallpaper'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.overlay.livewallpaper"
+        minSdk 26
+        targetSdk 34
+        versionCode 208
+        versionName "2.8"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            // 不在 gradle 内签名，构建 unsigned release 后用 apksigner
+            // 以 platform.pk8 + platform.x509.pem 完成平台签名
+            signingConfig null
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+dependencies {
+}
