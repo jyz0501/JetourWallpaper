@@ -3,15 +3,15 @@ plugins {
 }
 
 android {
-    namespace 'com.overlay.livewallpaper'
+    namespace 'com.qianxian.livewallpaper'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.overlay.livewallpaper"
+        applicationId "com.qianxian.livewallpaper"
         minSdk 26
         targetSdk 34
-        versionCode 208
-        versionName "2.8"
+        versionCode 209
+        versionName "2.9"
     }
 
     buildTypes {

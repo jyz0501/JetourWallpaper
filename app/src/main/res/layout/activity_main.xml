@@ -14,10 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingStart="32dp"
-            android:paddingEnd="32dp"
-            android:paddingTop="18dp"
-            android:paddingBottom="24dp">
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="14dp">
 
             <!-- 标题 -->
             <TextView
@@ -26,57 +26,83 @@
                 android:layout_gravity="center_horizontal"
                 android:text="捷徒动画"
                 android:textColor="#FFFFFFFF"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:text="长按桌面右下角齿轮可打开此界面"
                 android:textColor="#88FFFFFF"
-                android:textSize="12sp" />
+                android:textSize="11sp" />
 
             <!-- 视频源卡片 -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/card_bg"
                 android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp">
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="视频源"
                     android:textColor="#FFFFFFFF"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="#18FFFFFF" />
+
+                <!-- 视频源总开关 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="启用视频壁纸"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="14sp" />
+
+                    <Switch
+                        android:id="@+id/swVideo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="34dp"
+                        android:minWidth="64dp"
+                        android:textOn="开"
+                        android:textOff="关"
+                        android:switchPadding="10dp"
+                        android:textSize="13sp" />
+                </LinearLayout>
 
                 <!-- 视频源下拉选择 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <Spinner
                         android:id="@+id/spinnerVideo"
                         android:layout_width="0dp"
-                        android:layout_height="42dp"
+                        android:layout_height="36dp"
                         android:layout_weight="1"
                         android:background="@drawable/spinner_bg"
                         android:paddingStart="8dp"
@@ -85,15 +111,15 @@
                     <Button
                         android:id="@+id/btnBrowse"
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
-                        android:layout_marginStart="8dp"
+                        android:layout_height="36dp"
+                        android:layout_marginStart="6dp"
                         android:background="@drawable/btn_bg"
                         android:minWidth="0dp"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="20dp"
+                        android:paddingStart="14dp"
+                        android:paddingEnd="14dp"
                         android:text="浏览..."
                         android:textColor="#FFFFFFFF"
-                        android:textSize="14sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -101,27 +127,27 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/card_bg"
                 android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="12dp"
-                android:paddingBottom="16dp">
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="流光灯设置"
                     android:textColor="#FFFFFFFF"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_marginTop="6dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="4dp"
                     android:background="#18FFFFFF" />
 
                 <!-- 开关行 -->
@@ -137,27 +163,27 @@
                         android:layout_weight="1"
                         android:text="流光效果"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="15sp" />
+                        android:textSize="14sp" />
 
                     <Switch
                         android:id="@+id/swFlow"
                         android:layout_width="wrap_content"
-                        android:layout_height="42dp"
-                        android:minWidth="72dp"
+                        android:layout_height="34dp"
+                        android:minWidth="64dp"
                         android:textOn="开"
                         android:textOff="关"
-                        android:switchPadding="12dp"
-                        android:textSize="14sp" />
+                        android:switchPadding="10dp"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <!-- 流光样式选择 -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="4dp"
                     android:text="流光样式"
                     android:textColor="#AAFFFFFF"
-                    android:textSize="13sp" />
+                    android:textSize="12sp" />
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -171,171 +197,220 @@
                         android:orientation="horizontal" />
                 </HorizontalScrollView>
 
-                <!-- 流光宽度行 -->
+                <!-- 流光速度行：标题 + 滑块 + 数值，同一行 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="2dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="流光速度"
+                        android:textColor="#FFFFFFFF"
+                        android:textSize="13sp" />
+
+                    <SeekBar
+                        android:id="@+id/sbSpeed"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="-6dp"
                         android:layout_weight="1"
+                        android:max="200"
+                        android:min="1"
+                        android:progress="50"
+                        android:progressDrawable="@drawable/seekbar_progress"
+                        android:thumb="@drawable/seekbar_thumb"
+                        android:thumbOffset="0dp"
+                        android:minHeight="10dp"
+                        android:maxHeight="10dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:splitTrack="false" />
+
+                    <TextView
+                        android:id="@+id/tvSpeed"
+                        android:layout_width="66dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:gravity="end"
+                        android:singleLine="true"
+                        android:text="0.5 圈/s"
+                        android:textColor="#B3FFFFFF"
+                        android:textSize="11sp" />
+                </LinearLayout>
+
+                <!-- 流光宽度行 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="72dp"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
                         android:text="流光宽度"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="15sp" />
+                        android:textSize="13sp" />
+
+                    <SeekBar
+                        android:id="@+id/sbWidth"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-6dp"
+                        android:layout_weight="1"
+                        android:max="40"
+                        android:min="1"
+                        android:progress="12"
+                        android:progressDrawable="@drawable/seekbar_progress"
+                        android:thumb="@drawable/seekbar_thumb"
+                        android:thumbOffset="0dp"
+                        android:minHeight="10dp"
+                        android:maxHeight="10dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:splitTrack="false" />
 
                     <TextView
                         android:id="@+id/tvWidth"
-                        android:layout_width="64dp"
+                        android:layout_width="66dp"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:gravity="end"
+                        android:singleLine="true"
                         android:text="12dp"
                         android:textColor="#B3FFFFFF"
-                        android:textSize="13sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
-
-                <SeekBar
-                    android:id="@+id/sbWidth"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="-8dp"
-                    android:layout_marginEnd="-8dp"
-                    android:max="40"
-                    android:min="1"
-                    android:progress="12"
-                    android:progressDrawable="@drawable/seekbar_progress"
-                    android:thumb="@drawable/seekbar_thumb"
-                    android:thumbOffset="0dp"
-                    android:minHeight="10dp"
-                    android:maxHeight="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:splitTrack="false" />
 
                 <!-- 灵敏度行 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="72dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:singleLine="true"
                         android:text="灵敏度"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="15sp" />
+                        android:textSize="13sp" />
+
+                    <SeekBar
+                        android:id="@+id/sbSens"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-6dp"
+                        android:layout_weight="1"
+                        android:max="100"
+                        android:min="1"
+                        android:progress="50"
+                        android:progressDrawable="@drawable/seekbar_progress"
+                        android:thumb="@drawable/seekbar_thumb"
+                        android:thumbOffset="0dp"
+                        android:minHeight="10dp"
+                        android:maxHeight="10dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:splitTrack="false" />
 
                     <TextView
                         android:id="@+id/tvSens"
-                        android:layout_width="64dp"
+                        android:layout_width="66dp"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:gravity="end"
+                        android:singleLine="true"
                         android:text="50%"
                         android:textColor="#B3FFFFFF"
-                        android:textSize="13sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
-
-                <SeekBar
-                    android:id="@+id/sbSens"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="-8dp"
-                    android:layout_marginEnd="-8dp"
-                    android:max="100"
-                    android:min="1"
-                    android:progress="50"
-                    android:progressDrawable="@drawable/seekbar_progress"
-                    android:thumb="@drawable/seekbar_thumb"
-                    android:thumbOffset="0dp"
-                    android:minHeight="10dp"
-                    android:maxHeight="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:splitTrack="false" />
 
                 <!-- 亮度行 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="72dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:singleLine="true"
                         android:text="亮度"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="15sp" />
+                        android:textSize="13sp" />
+
+                    <SeekBar
+                        android:id="@+id/sbBright"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-6dp"
+                        android:layout_weight="1"
+                        android:max="200"
+                        android:min="10"
+                        android:progress="100"
+                        android:progressDrawable="@drawable/seekbar_progress"
+                        android:thumb="@drawable/seekbar_thumb"
+                        android:thumbOffset="0dp"
+                        android:minHeight="10dp"
+                        android:maxHeight="10dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:splitTrack="false" />
 
                     <TextView
                         android:id="@+id/tvBright"
-                        android:layout_width="64dp"
+                        android:layout_width="66dp"
                         android:layout_height="wrap_content"
+                        android:ellipsize="end"
                         android:gravity="end"
+                        android:singleLine="true"
                         android:text="100%"
                         android:textColor="#B3FFFFFF"
-                        android:textSize="13sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
-                <SeekBar
-                    android:id="@+id/sbBright"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="-8dp"
-                    android:layout_marginEnd="-8dp"
-                    android:max="200"
-                    android:min="10"
-                    android:progress="100"
-                    android:progressDrawable="@drawable/seekbar_progress"
-                    android:thumb="@drawable/seekbar_thumb"
-                    android:thumbOffset="0dp"
-                    android:minHeight="10dp"
-                    android:maxHeight="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
-                    android:splitTrack="false" />
-
-                <!-- 操作按钮（移入 ScrollView 内部，确保始终可见可点击） -->
+                <!-- 操作按钮 -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/btnStart"
                         android:layout_width="wrap_content"
-                        android:layout_height="48dp"
-                        android:layout_marginEnd="16dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="14dp"
                         android:background="@drawable/btn_bg"
                         android:minWidth="0dp"
-                        android:paddingStart="36dp"
-                        android:paddingEnd="36dp"
+                        android:paddingStart="28dp"
+                        android:paddingEnd="28dp"
                         android:text="启动叠加"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/btnStop"
                         android:layout_width="wrap_content"
-                        android:layout_height="48dp"
+                        android:layout_height="40dp"
                         android:background="@drawable/btn_bg"
                         android:minWidth="0dp"
-                        android:paddingStart="36dp"
-                        android:paddingEnd="36dp"
+                        android:paddingStart="28dp"
+                        android:paddingEnd="28dp"
                         android:text="停止叠加"
                         android:textColor="#FFFFFFFF"
-                        android:textSize="15sp"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
@@ -343,7 +418,7 @@
     </ScrollView>
 
     <!-- 流光层：覆盖整屏，只画周边描边；clickable=false 让点击穿透到下层 -->
-    <com.overlay.livewallpaper.AudioVisualizerView
+    <com.qianxian.livewallpaper.AudioVisualizerView
         android:id="@+id/visualizer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,4 +1,4 @@
-package com.overlay.livewallpaper;
+package com.qianxian.livewallpaper;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- 车机应用：以 system uid 运行，配合平台签名可抓取全局音频输出、读 logcat、使用高权限窗口类型 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     android:sharedUserId="android.uid.system">
 
@@ -46,11 +47,11 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:excludeFromRecents="true">
             <intent-filter>
-                <action android:name="com.overlay.livewallpaper.action.START_OVERLAY" />
+                <action android:name="com.qianxian.livewallpaper.action.START_OVERLAY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="com.overlay.livewallpaper.action.STOP_OVERLAY" />
+                <action android:name="com.qianxian.livewallpaper.action.STOP_OVERLAY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -75,8 +76,8 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.overlay.livewallpaper.action.WIDGET_START" />
-                <action android:name="com.overlay.livewallpaper.action.WIDGET_STOP" />
+                <action android:name="com.qianxian.livewallpaper.action.WIDGET_START" />
+                <action android:name="com.qianxian.livewallpaper.action.WIDGET_STOP" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"

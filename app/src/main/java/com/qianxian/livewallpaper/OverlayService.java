@@ -1,4 +1,4 @@
-package com.overlay.livewallpaper;
+package com.qianxian.livewallpaper;
 
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -66,6 +66,9 @@ public class OverlayService extends Service {
 
     private LogcatWatcher logcatWatcher;
 
+    /** 车机桌面不存在（例如装在普通手机上测试）时，放宽为一直显示，否则叠加层永远不可见。 */
+    private volatile boolean launcherInstalled = true;
+
     private String lastTopPkg = "";
     private boolean lastNaviActive = false;
     private boolean lastManualHide = false;
@@ -79,6 +82,10 @@ public class OverlayService extends Service {
     public void onCreate() {
         super.onCreate();
         startForegroundCompat();
+        launcherInstalled = isPackageInstalled(LAUNCHER_PKG);
+        if (!launcherInstalled) {
+            Log.i(TAG, "launcher " + LAUNCHER_PKG + " not installed, overlay always visible");
+        }
         addOverlay();
         addSettingsButton();
         startLogcatWatcher();
@@ -164,7 +171,8 @@ public class OverlayService extends Service {
         int widthDp = prefs.getInt("flow_width_dp", 12);
         int sensPct = prefs.getInt("flow_sensitivity", 50);
         int brightPct = prefs.getInt("flow_brightness_pct", 100);
-        int style = prefs.getInt("flow_style", AudioVisualizerView.STYLE_RAINBOW);
+        int speedPct = prefs.getInt("flow_speed_pct", 50);
+        int style = prefs.getInt("flow_style", AudioVisualizerView.STYLE_SPECTRUM);
 
         flowView = new AudioVisualizerView(this);
         FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
@@ -173,30 +181,18 @@ public class OverlayService extends Service {
         flowView.setLayoutParams(lp);
         flowView.setEnabled2(true);
         flowView.setFlowWidth(widthDp * density);
-        flowView.setSensitivity(0.1f + (sensPct / 100f) * 4.9f);
+        flowView.setSensitivity(0.5f + (sensPct / 100f) * 1.5f);
         flowView.setBrightness(brightPct / 100f);
+        flowView.setFlowSpeed(speedPct / 100f);
         flowView.setStyle(style);
         
         ((FrameLayout) flowOverlayView).addView(flowView);
 
         audioAnalyzer = AudioAnalyzer.get();
-        audioAnalyzer.setListener(new AudioAnalyzer.Listener() {
-            @Override
-            public void onLevel(float level) {
-                if (flowView != null) flowView.onAudioLevel(level);
-            }
-
-            @Override
-            public void onIntensity(float intensity) {
-                if (flowView != null) flowView.setIntensity(intensity);
-            }
-
-            @Override
-            public void onHue(float hueDeg) {
-                if (flowView != null) flowView.setHue(hueDeg);
-            }
+        audioAnalyzer.setListener(frame -> {
+            if (flowView != null) flowView.onFrame(frame);
         });
-        audioAnalyzer.start();
+        audioAnalyzer.start(this);
         Log.i(TAG, "FlowLight started style=" + style
                 + " widthDp=" + widthDp + " sensPct=" + sensPct
                 + " brightPct=" + brightPct
@@ -309,8 +305,16 @@ public class OverlayService extends Service {
         return launcherTop;
     }
 
+    private boolean isPackageInstalled(String pkg) {
+        try {
+            return getPackageManager().getPackageInfo(pkg, 0) != null;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     private void updateVisibility() {
-        boolean launcherTop = isLauncherForeground();
+        boolean launcherTop = launcherInstalled ? isLauncherForeground() : true;
 
         boolean showOverlay;
         boolean showButton;
@@ -354,6 +358,14 @@ public class OverlayService extends Service {
         wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         if (wm == null) {
             Log.e(TAG, "WindowManager null");
+            return;
+        }
+
+        // 视频壁纸总开关：关掉后不创建视频窗口、不解码，只保留流光灯
+        boolean videoEnabled = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean("video_enabled", true);
+        if (!videoEnabled) {
+            Log.i(TAG, "video disabled by user, skip video overlay");
             return;
         }
 

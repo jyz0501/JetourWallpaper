@@ -1,11 +1,16 @@
-package com.overlay.livewallpaper;
+package com.qianxian.livewallpaper;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
@@ -40,11 +45,16 @@ public class MainActivity extends Activity {
     private static final String PREF_FLOW_SENSITIVITY = "flow_sensitivity";
     private static final String PREF_FLOW_STYLE = "flow_style";
     private static final String PREF_FLOW_BRIGHTNESS = "flow_brightness_pct";
+    private static final String PREF_FLOW_SPEED = "flow_speed_pct";
+    private static final String PREF_VIDEO_ENABLED = "video_enabled";
+
+    private static final int REQ_AUDIO_PERM = 1001;
 
     private Spinner spinnerVideo;
     private List<VideoSource.Item> videoItems;
     private AudioVisualizerView visualizer;
     private AudioAnalyzer analyzer;
+    private Runnable pendingAudioStart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +110,18 @@ public class MainActivity extends Activity {
         btnBrowse.setOnClickListener(v -> showFileBrowser());
 
         
+        Switch swVideo = findViewById(R.id.swVideo);
+        boolean videoEnabled = prefs.getBoolean(PREF_VIDEO_ENABLED, true);
+        swVideo.setChecked(videoEnabled);
+        applyVideoEnabled(videoEnabled);
+        swVideo.setOnCheckedChangeListener((button, checked) -> {
+            prefs.edit().putBoolean(PREF_VIDEO_ENABLED, checked).apply();
+            applyVideoEnabled(checked);
+            Toast.makeText(this, checked ? "视频壁纸：开" : "视频壁纸：关（仅保留流光灯）",
+                    Toast.LENGTH_SHORT).show();
+        });
+
+        
         visualizer = findViewById(R.id.visualizer);
         Switch swFlow = findViewById(R.id.swFlow);
         SeekBar sbWidth = findViewById(R.id.sbWidth);
@@ -108,12 +130,15 @@ public class MainActivity extends Activity {
         TextView tvSens = findViewById(R.id.tvSens);
         SeekBar sbBright = findViewById(R.id.sbBright);
         TextView tvBright = findViewById(R.id.tvBright);
+        SeekBar sbSpeed = findViewById(R.id.sbSpeed);
+        TextView tvSpeed = findViewById(R.id.tvSpeed);
 
         boolean flowEnabled = prefs.getBoolean(PREF_FLOW_ENABLED, true);
         int widthDp = prefs.getInt(PREF_FLOW_WIDTH, 12);
         int sensPct = prefs.getInt(PREF_FLOW_SENSITIVITY, 50);
         int brightPct = prefs.getInt(PREF_FLOW_BRIGHTNESS, 100);
-        int flowStyle = prefs.getInt(PREF_FLOW_STYLE, AudioVisualizerView.STYLE_RAINBOW);
+        int speedPct = prefs.getInt(PREF_FLOW_SPEED, 50);
+        int flowStyle = prefs.getInt(PREF_FLOW_STYLE, AudioVisualizerView.STYLE_SPECTRUM);
 
         swFlow.setChecked(flowEnabled);
         sbWidth.setProgress(widthDp);
@@ -122,46 +147,51 @@ public class MainActivity extends Activity {
         tvSens.setText(sensPct + "%");
         sbBright.setProgress(brightPct);
         tvBright.setText(brightPct + "%");
+        sbSpeed.setProgress(speedPct);
+        tvSpeed.setText(formatSpeed(speedPct));
 
         visualizer.setEnabled2(flowEnabled);
         visualizer.setFlowWidth(widthDp * density);
         
-        visualizer.setSensitivity(0.1f + (sensPct / 100f) * 4.9f);
+        visualizer.setSensitivity(0.5f + (sensPct / 100f) * 1.5f);
         
         visualizer.setBrightness(brightPct / 100f);
+        visualizer.setFlowSpeed(speedPct / 100f);
         visualizer.setStyle(flowStyle);
 
         
         RadioGroup styleGroup = findViewById(R.id.styleGroup);
         float d = density;
         String[] styleNames = {
-                "彩虹流动", "双色彩带", "极光",
-                "霓虹", "赛博"
+                "音乐律动", "彩虹流动", "单色呼吸",
+                "双色彩带", "极光", "霓虹", "赛博", "流光", "泛光"
         };
         int[] styleValues = {
+                AudioVisualizerView.STYLE_SPECTRUM,
                 AudioVisualizerView.STYLE_RAINBOW,
+                AudioVisualizerView.STYLE_SINGLE,
                 AudioVisualizerView.STYLE_DUAL,
                 AudioVisualizerView.STYLE_AURORA,
                 AudioVisualizerView.STYLE_NEON,
-                AudioVisualizerView.STYLE_CYBER
+                AudioVisualizerView.STYLE_CYBER,
+                AudioVisualizerView.STYLE_FLOWING,
+                AudioVisualizerView.STYLE_BLOOM
         };
-        
-        if (flowStyle == AudioVisualizerView.STYLE_SINGLE
-                || flowStyle == AudioVisualizerView.STYLE_SPECTRUM
-                || flowStyle == 7 || flowStyle == 8) {
-            flowStyle = AudioVisualizerView.STYLE_RAINBOW;
+
+        if (flowStyle < 0 || flowStyle >= AudioVisualizerView.STYLE_COUNT) {
+            flowStyle = AudioVisualizerView.STYLE_SPECTRUM;
         }
         for (int i = 0; i < styleNames.length; i++) {
             RadioButton rb = new RadioButton(this);
             rb.setText(styleNames[i]);
             rb.setTextColor(0xFFFFFFFF);
-            rb.setPadding((int) (8 * d), (int) (6 * d), (int) (8 * d), (int) (6 * d));
-            rb.setTextSize(14);
+            rb.setPadding((int) (6 * d), (int) (2 * d), (int) (6 * d), (int) (2 * d));
+            rb.setTextSize(13);
             rb.setTag(styleValues[i]);
             RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(
                     RadioGroup.LayoutParams.WRAP_CONTENT,
                     RadioGroup.LayoutParams.WRAP_CONTENT);
-            if (i > 0) lp.leftMargin = (int) (6 * d);
+            if (i > 0) lp.leftMargin = (int) (4 * d);
             styleGroup.addView(rb, lp);
             if (styleValues[i] == flowStyle) styleGroup.check(rb.getId());
         }
@@ -204,7 +234,7 @@ public class MainActivity extends Activity {
             @Override
             public void onProgressChanged(SeekBar sb, int p, boolean fu) {
                 tvSens.setText(p + "%");
-                visualizer.setSensitivity(0.1f + (p / 100f) * 4.9f);
+                visualizer.setSensitivity(0.5f + (p / 100f) * 1.5f);
             }
 
             @Override
@@ -232,6 +262,22 @@ public class MainActivity extends Activity {
             }
         });
 
+        sbSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar sb, int p, boolean fu) {
+                tvSpeed.setText(formatSpeed(p));
+                visualizer.setFlowSpeed(p / 100f);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar sb) { }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar sb) {
+                prefs.edit().putInt(PREF_FLOW_SPEED, sb.getProgress()).apply();
+            }
+        });
+
         Button btnStart = findViewById(R.id.btnStart);
         Button btnStop = findViewById(R.id.btnStop);
 
@@ -251,26 +297,27 @@ public class MainActivity extends Activity {
 
         
         analyzer = AudioAnalyzer.get();
-        analyzer.setListener(new AudioAnalyzer.Listener() {
-            @Override
-            public void onLevel(float level) {
-                visualizer.onAudioLevel(level);
-            }
-
-            @Override
-            public void onIntensity(float intensity) {
-                visualizer.setIntensity(intensity);
-            }
-
-            @Override
-            public void onHue(float hueDeg) {
-                visualizer.setHue(hueDeg);
-            }
+        analyzer.setListener(frame -> {
+            if (visualizer != null) visualizer.onFrame(frame);
         });
-        analyzer.start();
+        ensurePermissionsThen(() -> analyzer.start(this));
     }
 
-    
+    /** 关掉视频壁纸时，把视频相关的控件一起置灰。 */
+    private void applyVideoEnabled(boolean on) {
+        float a = on ? 1f : 0.4f;
+        View btnBrowse = findViewById(R.id.btnBrowse);
+        spinnerVideo.setEnabled(on);
+        spinnerVideo.setAlpha(a);
+        btnBrowse.setEnabled(on);
+        btnBrowse.setAlpha(a);
+    }
+
+    /** 进度 1..200 → 0.01..2.00 圈/秒。 */
+    private static String formatSpeed(int progressPct) {
+        int p = Math.max(1, Math.min(200, progressPct));
+        return (p / 100f) + " 圈/s";
+    }
 
     
     private void showFileBrowser() {
@@ -371,6 +418,42 @@ public class MainActivity extends Activity {
         videoAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         spinnerVideo.setAdapter(videoAdapter);
         spinnerVideo.setSelection(idx);
+    }
+
+    /**
+     * 手机版需要两个运行时授权：
+     *  - RECORD_AUDIO：Android 14 禁用 session 0 后，麦克风是唯一可用的采集源；
+     *  - SYSTEM_ALERT_WINDOW：叠加灯带窗口。
+     * 车机版（system uid）默认已具备，这里会被跳过。
+     */
+    private void ensurePermissionsThen(Runnable onGranted) {
+        boolean needMic = checkSelfPermission(Manifest.permission.RECORD_AUDIO)
+                != PackageManager.PERMISSION_GRANTED;
+        boolean needOverlay = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !Settings.canDrawOverlays(this);
+
+        if (needOverlay) {
+            try {
+                startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName())));
+            } catch (Exception ignored) { }
+        }
+        if (needMic) {
+            pendingAudioStart = onGranted;
+            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO}, REQ_AUDIO_PERM);
+        } else {
+            onGranted.run();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] results) {
+        super.onRequestPermissionsResult(requestCode, permissions, results);
+        if (requestCode == REQ_AUDIO_PERM && pendingAudioStart != null) {
+            Runnable r = pendingAudioStart;
+            pendingAudioStart = null;
+            r.run();
+        }
     }
 
     @Override
