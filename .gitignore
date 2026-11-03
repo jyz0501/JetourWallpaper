@@ -1,15 +1,21 @@
-# Gradle
+# ---------- Gradle / 构建产物 ----------
 .gradle/
 build/
+app/build/
+*.apk
+*.aab
+*.idsig
+captures/
+.externalNativeBuild/
 
-# Local configuration
+# ---------- 本地机器配置（不通用） ----------
 local.properties
 
-# IDE
+# ---------- IDE ----------
 .idea/
 *.iml
 .vscode/
 .DS_Store
 
-# Platform signing keys (sensitive)
+# ---------- 签名密钥（敏感，仅本地保留） ----------
 sign/
