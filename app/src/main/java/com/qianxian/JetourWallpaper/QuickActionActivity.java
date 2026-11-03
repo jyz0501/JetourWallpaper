@@ -1,4 +1,4 @@
-package com.qianxian.livewallpaper;
+package com.qianxian.JetourWallpaper;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,8 +10,8 @@ public class QuickActionActivity extends Activity {
 
     private static final String TAG = "QuickAction";
 
-    public static final String ACTION_START = "com.qianxian.livewallpaper.action.START_OVERLAY";
-    public static final String ACTION_STOP  = "com.qianxian.livewallpaper.action.STOP_OVERLAY";
+    public static final String ACTION_START = "com.qianxian.JetourWallpaper.action.START_OVERLAY";
+    public static final String ACTION_STOP  = "com.qianxian.JetourWallpaper.action.STOP_OVERLAY";
 
     @Override
     protected void onCreate(Bundle saved) {

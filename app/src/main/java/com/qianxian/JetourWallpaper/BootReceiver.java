@@ -1,4 +1,4 @@
-package com.qianxian.livewallpaper;
+package com.qianxian.JetourWallpaper;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.qianxian.livewallpaper;
+package com.qianxian.JetourWallpaper;
 
 import android.Manifest;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.qianxian.livewallpaper;
+package com.qianxian.JetourWallpaper;
 
 import android.app.ActivityManager;
 import android.app.Notification;
@@ -48,6 +48,7 @@ public class OverlayService extends Service {
     private MediaPlayer player;
     private boolean added;
     private boolean flowAdded;
+    private int usedType = -1;
 
     private AudioAnalyzer audioAnalyzer;   
 
@@ -109,9 +110,10 @@ public class OverlayService extends Service {
     private void addFlowOverlay() {
         if (wm == null || flowAdded) return;
 
-        int type = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-                ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-                : WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        // 关键修复：复用视频已验证可用的窗口类型。视频优先尝试 TYPE_WALLPAPER(2013)，
+        // 该类型位于桌面 widget 之下，可避免遮挡；写死 TYPE_APPLICATION_OVERLAY(2038)
+        // 会永远盖在 widget 之上。视频被禁用时退而自行探测最底层可用类型。
+        int type = resolveOverlayType();
 
         
         android.util.DisplayMetrics dm = new android.util.DisplayMetrics();
@@ -141,6 +143,36 @@ public class OverlayService extends Service {
         } catch (Exception e) {
             Log.e(TAG, "addFlowOverlay failed", e);
         }
+    }
+
+    /**
+     * 解析一个可成功 addView 的窗口类型，优先返回最底层（TYPE_WALLPAPER=2013），
+     * 使叠加层位于桌面 widget 之下而不遮挡。视频已 addView 成功时直接复用其类型；
+     * 视频被禁用时自行用 1x1 探针逐个尝试。
+     */
+    private int resolveOverlayType() {
+        if (usedType >= 0) return usedType;
+        int[] tryTypes = new int[] {2013, 2004, 2010, 2014, 2017, 2006, 2005, 2003, 2002, 2038};
+        for (int t : tryTypes) {
+            WindowManager.LayoutParams probe = new WindowManager.LayoutParams(
+                    1, 1, t,
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                            | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    PixelFormat.TRANSLUCENT);
+            probe.gravity = Gravity.TOP | Gravity.START;
+            View v = new View(this);
+            try {
+                wm.addView(v, probe);
+                wm.removeViewImmediate(v);
+                Log.i(TAG, "probe overlay type=" + t + " OK");
+                return t;
+            } catch (Exception e) {
+                Log.w(TAG, "probe type=" + t + " failed: " + e.getMessage());
+            }
+        }
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                : WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
     }
 
     private void removeFlowOverlay() {
@@ -392,7 +424,6 @@ public class OverlayService extends Service {
         int screenH = dm.heightPixels;
 
         FrameLayout container = null;
-        int usedType = -1;
         for (int t : tryTypes) {
             WindowManager.LayoutParams fLp = new WindowManager.LayoutParams(
                     screenW, screenH,

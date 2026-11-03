@@ -9,9 +9,9 @@
         android:shortcutLongLabel="@string/shortcut_start_long"
         android:shortcutDisabledMessage="@string/shortcut_disabled">
         <intent
-            android:action="com.qianxian.livewallpaper.action.START_OVERLAY"
-            android:targetPackage="com.qianxian.livewallpaper"
-            android:targetClass="com.qianxian.livewallpaper.QuickActionActivity" />
+            android:action="com.qianxian.JetourWallpaper.action.START_OVERLAY"
+            android:targetPackage="com.qianxian.JetourWallpaper"
+            android:targetClass="com.qianxian.JetourWallpaper.QuickActionActivity" />
         <categories android:name="android.intent.category.LAUNCHER" />
     </shortcut>
 
@@ -23,9 +23,9 @@
         android:shortcutLongLabel="@string/shortcut_stop_long"
         android:shortcutDisabledMessage="@string/shortcut_disabled">
         <intent
-            android:action="com.qianxian.livewallpaper.action.STOP_OVERLAY"
-            android:targetPackage="com.qianxian.livewallpaper"
-            android:targetClass="com.qianxian.livewallpaper.QuickActionActivity" />
+            android:action="com.qianxian.JetourWallpaper.action.STOP_OVERLAY"
+            android:targetPackage="com.qianxian.JetourWallpaper"
+            android:targetClass="com.qianxian.JetourWallpaper.QuickActionActivity" />
         <categories android:name="android.intent.category.LAUNCHER" />
     </shortcut>
 

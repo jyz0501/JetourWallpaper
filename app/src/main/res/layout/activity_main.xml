@@ -418,7 +418,7 @@
     </ScrollView>
 
     <!-- 流光层：覆盖整屏，只画周边描边；clickable=false 让点击穿透到下层 -->
-    <com.qianxian.livewallpaper.AudioVisualizerView
+    <com.qianxian.JetourWallpaper.AudioVisualizerView
         android:id="@+id/visualizer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

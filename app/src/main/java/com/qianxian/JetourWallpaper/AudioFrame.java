@@ -1,4 +1,4 @@
-package com.qianxian.livewallpaper;
+package com.qianxian.JetourWallpaper;
 
 /**
  * 一帧完整的音频特征，由 {@link AudioAnalyzer} 统一产出。

@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.qianxian.livewallpaper'
+    namespace 'com.qianxian.JetourWallpaper'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.qianxian.livewallpaper"
+        applicationId "com.qianxian.JetourWallpaper"
         minSdk 26
         targetSdk 34
         versionCode 209
@@ -26,6 +26,19 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
+    }
+
+    // 统一打包文件名格式：应用名_v版本_build版本号_构建类型.apk
+    // 例：捷途动态壁纸_v2.9_build209_release-unsigned.apk / _debug.apk
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def appName = "捷途动态壁纸"
+            def version = variant.versionName
+            def buildCode = variant.versionCode
+            def type = variant.buildType.name
+            def suffix = type == "release" ? "release-unsigned" : type
+            outputFileName = "${appName}_v${version}_build${buildCode}_${suffix}.apk"
+        }
     }
 }
 

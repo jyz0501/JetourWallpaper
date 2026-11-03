@@ -1,4 +1,4 @@
-package com.qianxian.livewallpaper;
+package com.qianxian.JetourWallpaper;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -14,8 +14,8 @@ public class OverlayAppWidget extends AppWidgetProvider {
 
     private static final String TAG = "OverlayAppWidget";
 
-    public static final String ACTION_START = "com.qianxian.livewallpaper.action.WIDGET_START";
-    public static final String ACTION_STOP = "com.qianxian.livewallpaper.action.WIDGET_STOP";
+    public static final String ACTION_START = "com.qianxian.JetourWallpaper.action.WIDGET_START";
+    public static final String ACTION_STOP = "com.qianxian.JetourWallpaper.action.WIDGET_STOP";
 
     @Override
     public void onUpdate(Context ctx, AppWidgetManager mgr, int[] ids) {
