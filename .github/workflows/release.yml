@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build Release APK (unsigned)
+        run: ./gradlew assembleRelease
+
+      - name: Sign APK (v1 + v2 self-signed)
+        run: |
+          APKSIGNER=$(ls $ANDROID_HOME/build-tools/*/apksigner | tail -1)
+          UNSIGNED=$(ls app/build/outputs/apk/release/*release-unsigned.apk | head -1)
+          "$APKSIGNER" sign --ks sign/selfsign.jks \
+            --ks-pass pass:android --ks-key-alias jetour \
+            --v1-signing-enabled true --v2-signing-enabled true \
+            --v3-signing-enabled false --v4-signing-enabled false \
+            --out "${UNSIGNED%-unsigned.apk}.apk" "$UNSIGNED"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/build/outputs/apk/release/*release.apk
+          generate_release_notes: true
