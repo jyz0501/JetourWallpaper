@@ -10,8 +10,8 @@ android {
         applicationId "com.qianxian.JetourWallpaper"
         minSdk 26
         targetSdk 34
-        versionCode 209
-        versionName "2.9"
+        versionCode 300
+        versionName "3.0"
     }
 
     buildTypes {
@@ -29,7 +29,7 @@ android {
     }
 
     // 统一打包文件名格式：应用名_v版本_build版本号_构建类型.apk
-    // 例：捷途动态壁纸_v2.9_build209_release-unsigned.apk / _debug.apk
+    // 例：捷途动态壁纸_v3.0_build300_release-unsigned.apk / _debug.apk
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def appName = "捷途动态壁纸"
