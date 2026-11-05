@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "LiveWallpaperApp"
+rootProject.name = "JetourWallpaper"
 include ':app'

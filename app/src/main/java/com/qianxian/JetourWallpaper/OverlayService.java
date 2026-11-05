@@ -131,7 +131,7 @@ public class OverlayService extends Service {
                         | WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
                 PixelFormat.TRANSLUCENT);
         lp.gravity = Gravity.TOP | Gravity.START;
-        lp.setTitle("LiveWallpaperFlowLight");
+        lp.setTitle("JetourWallpaperFlowLight");
 
         FrameLayout container = new FrameLayout(this);
         container.setLayoutParams(new FrameLayout.LayoutParams(screenW, screenH));
@@ -435,7 +435,7 @@ public class OverlayService extends Service {
                             | WindowManager.LayoutParams.FLAG_HARDWARE_ACCELERATED,
                     PixelFormat.TRANSLUCENT);
             fLp.gravity = Gravity.TOP | Gravity.START;
-            fLp.setTitle("LiveWallpaperOverlay");
+            fLp.setTitle("JetourWallpaperOverlay");
             
             FrameLayout c = new FrameLayout(this);
             c.setLayoutParams(new FrameLayout.LayoutParams(screenW, screenH));
@@ -500,7 +500,7 @@ public class OverlayService extends Service {
                         | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
                 PixelFormat.TRANSLUCENT);
         lp.gravity = Gravity.BOTTOM | Gravity.START;
-        lp.setTitle("LiveWallpaperSettingsBtn");
+        lp.setTitle("JetourWallpaperSettingsBtn");
 
         TextView btn = new TextView(this);
         btn.setText("\u2699"); 
