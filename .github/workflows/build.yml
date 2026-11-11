@@ -25,11 +25,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew assembleDebug assembleRelease
+      - name: Build Release APK (unsigned)
+        run: ./gradlew assembleRelease
 
       - name: Upload APKs
         uses: actions/upload-artifact@v4
         with:
           name: apks
-          path: app/build/outputs/apk/**/*.apk
+          path: app/build/outputs/apk/release/*.apk

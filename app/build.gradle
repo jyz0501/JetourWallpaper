@@ -28,16 +28,14 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    // 统一打包文件名格式：应用名_v版本_build版本号_构建类型.apk
-    // 例：捷途动态壁纸_v3.0_build300_release-unsigned.apk / _debug.apk
+    // 统一打包文件名格式：应用名_版本号_日期_AOSP-Platform.apk
+    // 例：JetourLivewallpaper_3.0_20261111_AOSP-Platform.apk
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            def appName = "捷途动态壁纸"
+            def appName = "JetourLivewallpaper"
             def version = variant.versionName
-            def buildCode = variant.versionCode
-            def type = variant.buildType.name
-            def suffix = type == "release" ? "release-unsigned" : type
-            outputFileName = "${appName}_v${version}_build${buildCode}_${suffix}.apk"
+            def date = new Date().format("yyyyMMdd")
+            outputFileName = "${appName}_${version}_${date}_AOSP-Platform.apk"
         }
     }
 }
