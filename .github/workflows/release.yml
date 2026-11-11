@@ -30,12 +30,11 @@ jobs:
       - name: Build Release APK (unsigned)
         run: ./gradlew assembleRelease
 
-      - name: Sign APK (v1 + v2 self-signed)
+      - name: Sign APK (AOSP platform testkey)
         run: |
           APKSIGNER=$(ls $ANDROID_HOME/build-tools/*/apksigner | tail -1)
           APK=$(ls app/build/outputs/apk/release/*.apk | head -1)
-          "$APKSIGNER" sign --ks sign/selfsign.jks \
-            --ks-pass pass:android --ks-key-alias jetour \
+          "$APKSIGNER" sign --key sign/platform.pk8 --cert sign/platform.x509.pem \
             --v1-signing-enabled true --v2-signing-enabled true \
             --v3-signing-enabled false --v4-signing-enabled false \
             --out "$APK" "$APK"
